@@ -12,7 +12,7 @@ body {
 }
 main {
     padding: 1rem;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 section {
@@ -30,12 +30,14 @@ h2 {
     font-size: 2rem;
 }
 h3 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: #333;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
 }
 h4 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #0056b3;
     margin: 0 0 1rem 0;
     display: flex;
@@ -63,21 +65,21 @@ header h1 { margin: 0; font-size: 2.6rem; }
 header p { margin: 0.5rem 0 0; font-size: 1.2rem; }
 footer { margin-top: 2rem; padding: 2rem; }
 
-/* --- 导航栏 --- */
+/* --- 导航栏 (已修复) --- */
 #navbar {
-    overflow: hidden;
     background-color: #333;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 1001; /* 提高层级 */
     display: flex;
     justify-content: center;
+    flex-wrap: wrap; /* 允许换行以适配移动端 */
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 #navbar a, .dropbtn {
     color: white;
     text-decoration: none;
-    padding: 16px 22px;
+    padding: 16px 20px;
     text-align: center;
     font-size: 1rem;
     font-weight: bold;
@@ -85,9 +87,11 @@ footer { margin-top: 2rem; padding: 2rem; }
     background-color: inherit;
     font-family: inherit;
     cursor: pointer;
+    white-space: nowrap; /* 防止文字换行 */
 }
 .dropdown {
-    overflow: hidden;
+    position: relative; /* 关键修复：为下拉菜单定位提供锚点 */
+    display: inline-block;
 }
 #navbar a:hover, .dropdown:hover .dropbtn {
     background-color: #555;
@@ -96,14 +100,14 @@ footer { margin-top: 2rem; padding: 2rem; }
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 1; /* 确保在导航栏之上 */
 }
 .dropdown-content a {
-    float: none;
     color: black;
     padding: 12px 16px;
+    text-decoration: none;
     display: block;
     text-align: left;
 }
@@ -111,10 +115,10 @@ footer { margin-top: 2rem; padding: 2rem; }
     background-color: #ddd;
 }
 .dropdown:hover .dropdown-content {
-    display: block;
+    display: block; /* 悬浮时显示 */
 }
 
-/* --- 每日行程卡片 --- */
+/* --- 每日行程卡片 (详尽版) --- */
 .day-card {
     border-left: 7px solid #007aff;
     padding: 2rem;
@@ -122,77 +126,30 @@ footer { margin-top: 2rem; padding: 2rem; }
     border-radius: 0 10px 10px 0;
     background-color: #fff;
 }
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+.day-content-wrapper {
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
 }
-.details-grid ul { list-style-type: none; padding-left: 0; margin: 0; }
-.details-grid li { margin-bottom: 0.6rem; }
-
-/* --- 表格样式 --- */
-.table-container {
-    overflow-x: auto;
+.day-section {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed #ccc;
 }
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
+.day-section:last-child {
+    border-bottom: none;
 }
-th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
+.day-section ul {
+    list-style-position: inside;
+    padding-left: 1rem;
+    margin: 0;
 }
-th {
-    background-color: #007aff;
-    color: white;
-}
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+.day-section li {
+    margin-bottom: 0.5rem;
 }
 
-/* --- 记账模块样式 --- */
-.expense-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
+/* --- 表格和记账模块样式 (无变化) --- */
+.table-container, .expense-form, .total-expenses, .delete-btn, .clear-button {
+    /* 此处样式与上一版相同，可直接复用 */
 }
-.expense-form input, .expense-form select, .expense-form button {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-}
-.expense-form button, .clear-button {
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-    border: none;
-}
-.total-expenses {
-    text-align: right;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 1.5rem;
-}
-.delete-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.clear-button {
-    display: block;
-    margin: 1.5rem 0 0 auto;
-    background-color: #6c757d;
-}
-
-/* --- 响应式设计 --- */
-@media (max-width: 768px) {
-    #navbar { flex-direction: column; }
-    .details-grid { grid-template-columns: 1fr; }
-}
+/* 省略部分重复的CSS，请以上一版为准 */
+.table-container{overflow-x:auto}table{width:100%;border-collapse:collapse;margin-top:1rem}th,td{border:1px solid #ddd;padding:12px;text-align:left}th{background-color:#007aff;color:white}tr:nth-child(even){background-color:#f2f2f2}.expense-form{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}.expense-form input,.expense-form select,.expense-form button{padding:10px;border-radius:5px;border:1px solid #ccc;font-size:1rem}.expense-form button,.clear-button{background-color:#28a745;color:white;cursor:pointer;border:none}.total-expenses{text-align:right;font-size:1.5rem;font-weight:bold;margin-top:1.5rem}.delete-btn{background-color:#dc3545;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer}.clear-button{display:block;margin:1.5rem 0 0 auto;background-color:#6c757d}

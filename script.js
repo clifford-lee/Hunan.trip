@@ -1,23 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("终极旅行指南已加载，记账与导航功能已激活！");
+    console.log("终极旅行指南已加载，所有功能已激活！");
 
     // --- 平滑滚动导航功能 ---
     document.querySelectorAll('#navbar a').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            // 确保是页面内锚点链接
-            if (this.getAttribute('href').startsWith('#')) {
+        if (anchor.getAttribute('href').startsWith('#')) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 document.querySelector(targetId).scrollIntoView({
-                    behavior: 'smooth'
+                    behavior: 'smooth',
+                    block: 'start'
                 });
-            }
-        });
+            });
+        }
     });
 
     // --- 每日记账功能 ---
     const expenseForm = document.getElementById('expense-form');
-    // 如果页面上没有记账表单，则不执行后续记账代码
     if (!expenseForm) return;
 
     const expenseList = document.getElementById('expense-list');
@@ -25,11 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearDataBtn = document.getElementById('clear-data');
     const expenseDateInput = document.getElementById('expense-date');
 
-    // 设置日期输入框默认为今天
     expenseDateInput.valueAsDate = new Date();
-
-    // 从 localStorage 加载数据
-    let expenses = JSON.parse(localStorage.getItem('tripExpenses_2025')) || [];
+    let expenses = JSON.parse(localStorage.getItem('tripExpenses_2025_final')) || [];
 
     function renderExpenses() {
         expenseList.innerHTML = '';
@@ -50,14 +46,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function saveData() {
-        localStorage.setItem('tripExpenses_2025', JSON.stringify(expenses));
+        localStorage.setItem('tripExpenses_2025_final', JSON.stringify(expenses));
     }
 
     expenseForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const newExpense = {
             id: Date.now(),
-            date: document.getElementById('expense-date').value,
+            date: expenseDateInput.value,
             item: document.getElementById('expense-item').value,
             category: document.getElementById('expense-category').value,
             amount: document.getElementById('expense-amount').value
@@ -72,9 +68,11 @@ document.addEventListener('DOMContentLoaded', function() {
     expenseList.addEventListener('click', function(e) {
         if (e.target.classList.contains('delete-btn')) {
             const idToDelete = parseInt(e.target.dataset.id);
-            expenses = expenses.filter(expense => expense.id !== idToDelete);
-            saveData();
-            renderExpenses();
+            if (confirm('您确定要删除这条记录吗？')) {
+                expenses = expenses.filter(expense => expense.id !== idToDelete);
+                saveData();
+                renderExpenses();
+            }
         }
     });
     
@@ -86,6 +84,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 初始加载
     renderExpenses();
 });
