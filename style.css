@@ -1,0 +1,163 @@
+/* --- 通用样式 --- */
+html {
+    scroll-behavior: smooth; /* 实现平滑滚动 */
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+}
+main {
+    padding: 1rem;
+    max-width: 950px;
+    margin: 0 auto;
+}
+section {
+    background-color: white;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+h2 {
+    color: #007aff;
+    border-bottom: 3px solid #eef2f5;
+    padding-bottom: 0.75rem;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+.card {
+    background: #fafafa;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+/* --- 头部和页脚样式 --- */
+header, footer {
+    background: linear-gradient(135deg, #007aff, #00c6ff);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+header h1 { margin: 0; font-size: 2.4rem; font-weight: 700; }
+header p { margin: 0.5rem 0 0; font-size: 1.1rem; opacity: 0.9; }
+footer { margin-top: 2rem; padding: 1.5rem; }
+
+/* --- 导航栏 --- */
+#navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}
+#navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 14px 20px;
+    text-align: center;
+}
+/* 下拉菜单 */
+.dropdown {
+    overflow: hidden;
+}
+.dropdown .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 20px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+#navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: #555;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/* --- 每日行程卡片样式 --- */
+.day-card {
+    border-top: 5px solid #007aff;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.day-card:target { /* 点击链接跳转后高亮效果 */
+    animation: highlight 1.5s ease-out;
+}
+@keyframes highlight {
+    from { background-color: #fffaf0; }
+    to { background-color: #fff; }
+}
+.day-card h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+.details-grid h4 {
+    font-size: 1.1rem;
+    color: #007aff;
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+}
+.icon {
+    margin-right: 8px;
+    font-size: 1.4rem;
+}
+.details-grid ul { list-style-type: none; padding-left: 0; margin: 0; }
+.details-grid li { margin-bottom: 0.6rem; }
+.details-grid li ul { padding-left: 1rem; margin-top: 0.4rem; }
+
+.tips-card {
+    background-color: #eef7ff;
+    border-left: 5px solid #00c6ff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+.tips-card h4 { margin: 0; color: #007aff; }
+.tips-card p { margin: 0.5rem 0 0; }
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .details-grid { grid-template-columns: 1fr; }
+    #navbar { flex-direction: column; }
+}
