@@ -1,18 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("终极旅行指南已加载，所有功能已激活！");
+    console.log("终极旅行指南(最终修复版)已加载，所有功能已激活！");
 
     // --- 平滑滚动导航功能 ---
-    document.querySelectorAll('#navbar a').forEach(anchor => {
-        if (anchor.getAttribute('href').startsWith('#')) {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                document.querySelector(targetId).scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+    document.querySelectorAll('#navbar a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            document.querySelector(targetId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
-        }
+        });
     });
 
     // --- 每日记账功能 ---
@@ -25,11 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const expenseDateInput = document.getElementById('expense-date');
 
     expenseDateInput.valueAsDate = new Date();
-    let expenses = JSON.parse(localStorage.getItem('tripExpenses_2025_final')) || [];
+    let expenses = JSON.parse(localStorage.getItem('tripExpenses_2025_final_v2')) || [];
 
     function renderExpenses() {
         expenseList.innerHTML = '';
         let total = 0;
+        expenses.sort((a, b) => new Date(b.date) - new Date(a.date)); // 按日期降序排序
         expenses.forEach(expense => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -46,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function saveData() {
-        localStorage.setItem('tripExpenses_2025_final', JSON.stringify(expenses));
+        localStorage.setItem('tripExpenses_2025_final_v2', JSON.stringify(expenses));
     }
 
     expenseForm.addEventListener('submit', function(e) {

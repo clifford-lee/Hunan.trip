@@ -1,155 +1,48 @@
 /* --- 通用样式 --- */
-html {
-    scroll-behavior: smooth;
-}
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f7f6;
-    color: #333;
-}
-main {
-    padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-section {
-    background-color: white;
-    margin-bottom: 2.5rem;
-    padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-h2 {
-    color: #007aff;
-    border-bottom: 3px solid #eef2f5;
-    padding-bottom: 0.75rem;
-    margin-top: 0;
-    font-size: 2rem;
-}
-h3 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 2rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
-}
-h4 {
-    font-size: 1.3rem;
-    color: #0056b3;
-    margin: 0 0 1rem 0;
-    display: flex;
-    align-items: center;
-}
-.card {
-    background: #fafafa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-top: 1rem;
-}
-.icon {
-    margin-right: 10px;
-    font-size: 1.5rem;
-}
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; margin: 0; padding: 0; background-color: #f8f9fa; color: #343a40; }
+main { padding: 1rem; max-width: 1000px; margin: 0 auto; }
+section { background-color: white; margin-bottom: 2rem; padding: 2rem; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+h2, h3, h4 { margin-top: 0; font-weight: 600; }
+h2 { color: #007bff; border-bottom: 2px solid #e9ecef; padding-bottom: 0.75rem; font-size: 2rem; }
+h3 { font-size: 1.5rem; color: #495057; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid #dee2e6;}
+h4 { font-size: 1.2rem; color: #0056b3; margin-bottom: 1rem; }
+.card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem; border: 1px solid #e9ecef; }
+ul { padding-left: 20px; }
+li { margin-bottom: 0.75rem; }
 
 /* --- 头部和页脚 --- */
-header, footer {
-    background: linear-gradient(135deg, #007aff, #00c6ff);
-    color: white;
-    text-align: center;
-    padding: 2.5rem 1rem;
-}
-header h1 { margin: 0; font-size: 2.6rem; }
-header p { margin: 0.5rem 0 0; font-size: 1.2rem; }
+header, footer { background: linear-gradient(135deg, #007bff, #17a2b8); color: white; text-align: center; padding: 2.5rem 1rem; }
+header h1 { margin: 0; font-size: 2.5rem; }
+header p { margin: 0.5rem 0 0; font-size: 1.1rem; }
 footer { margin-top: 2rem; padding: 2rem; }
 
-/* --- 导航栏 (已修复) --- */
-#navbar {
-    background-color: #333;
-    position: sticky;
-    top: 0;
-    z-index: 1001; /* 提高层级 */
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* 允许换行以适配移动端 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-#navbar a, .dropbtn {
-    color: white;
-    text-decoration: none;
-    padding: 16px 20px;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    background-color: inherit;
-    font-family: inherit;
-    cursor: pointer;
-    white-space: nowrap; /* 防止文字换行 */
-}
-.dropdown {
-    position: relative; /* 关键修复：为下拉菜单定位提供锚点 */
-    display: inline-block;
-}
-#navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: #555;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1; /* 确保在导航栏之上 */
-}
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-.dropdown:hover .dropdown-content {
-    display: block; /* 悬浮时显示 */
-}
+/* --- 导航栏 --- */
+#navbar { background-color: #343a40; position: sticky; top: 0; z-index: 1001; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 5px rgba(0,0,0,0.2); padding: 0 10px; }
+#navbar a, .dropbtn { color: white; text-decoration: none; padding: 15px; text-align: center; font-size: 1rem; font-weight: 500; border: none; background-color: inherit; cursor: pointer; white-space: nowrap; }
+.dropdown { position: relative; display: inline-block; }
+#navbar a:hover, .dropdown:hover .dropbtn { background-color: #495057; }
+.dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 180px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1002; border-radius: 0 0 5px 5px; border: 1px solid #ddd; }
+.dropdown-content a { color: black !important; padding: 12px 16px; text-decoration: none; display: block; text-align: left; font-size: 0.9rem; }
+.dropdown-content a:hover { background-color: #f1f1f1; }
+.dropdown:hover .dropdown-content { display: block; }
 
-/* --- 每日行程卡片 (详尽版) --- */
-.day-card {
-    border-left: 7px solid #007aff;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    border-radius: 0 10px 10px 0;
-    background-color: #fff;
-}
-.day-content-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-.day-section {
-    padding-bottom: 1.5rem;
-    border-bottom: 1px dashed #ccc;
-}
-.day-section:last-child {
-    border-bottom: none;
-}
-.day-section ul {
-    list-style-position: inside;
-    padding-left: 1rem;
-    margin: 0;
-}
-.day-section li {
-    margin-bottom: 0.5rem;
-}
+/* --- 每日行程卡片 --- */
+.day-card { border-left: 5px solid #007bff; padding: 2rem; margin-bottom: 2rem; border-radius: 0 8px 8px 0; }
+.day-content-wrapper p { margin: 0 0 1rem 0; }
+.day-content-wrapper ul { margin-top: -0.5rem; margin-bottom: 1rem; }
 
-/* --- 表格和记账模块样式 (无变化) --- */
-.table-container, .expense-form, .total-expenses, .delete-btn, .clear-button {
-    /* 此处样式与上一版相同，可直接复用 */
-}
-/* 省略部分重复的CSS，请以上一版为准 */
-.table-container{overflow-x:auto}table{width:100%;border-collapse:collapse;margin-top:1rem}th,td{border:1px solid #ddd;padding:12px;text-align:left}th{background-color:#007aff;color:white}tr:nth-child(even){background-color:#f2f2f2}.expense-form{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}.expense-form input,.expense-form select,.expense-form button{padding:10px;border-radius:5px;border:1px solid #ccc;font-size:1rem}.expense-form button,.clear-button{background-color:#28a745;color:white;cursor:pointer;border:none}.total-expenses{text-align:right;font-size:1.5rem;font-weight:bold;margin-top:1.5rem}.delete-btn{background-color:#dc3545;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer}.clear-button{display:block;margin:1.5rem 0 0 auto;background-color:#6c757d}
+/* --- 表格和记账模块 --- */
+.table-container { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+th, td { border: 1px solid #dee2e6; padding: 12px; text-align: left; }
+th { background-color: #6c757d; color: white; }
+tr:nth-child(even) { background-color: #f8f9fa; }
+.expense-form { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+.expense-form input, .expense-form select, .expense-form button { padding: 10px; border-radius: 5px; border: 1px solid #ced4da; font-size: 1rem; }
+.expense-form button, .clear-button { background-color: #28a745; color: white; cursor: pointer; border: none; transition: background-color 0.3s; }
+.expense-form button:hover, .clear-button:hover { opacity: 0.8; }
+.total-expenses { text-align: right; font-size: 1.5rem; font-weight: bold; margin-top: 1.5rem; }
+.delete-btn { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+.delete-btn:hover { background-color: #c82333; }
+.clear-button { display: block; margin: 1.5rem 0 0 auto; background-color: #6c757d; }
