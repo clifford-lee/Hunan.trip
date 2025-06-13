@@ -17,15 +17,16 @@ header h1 { margin: 0; font-size: 2.5rem; }
 header p { margin: 0.5rem 0 0; font-size: 1.1rem; }
 footer { margin-top: 2rem; padding: 2rem; }
 
-/* --- 导航栏 --- */
+/* --- 导航栏 (修复点击收起问题) --- */
 #navbar { background-color: #343a40; position: sticky; top: 0; z-index: 1001; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 5px rgba(0,0,0,0.2); padding: 0 10px; }
-#navbar a, .dropbtn { color: white; text-decoration: none; padding: 15px; text-align: center; font-size: 1rem; font-weight: 500; border: none; background-color: inherit; cursor: pointer; white-space: nowrap; }
+#navbar a { color: white; text-decoration: none; padding: 15px; text-align: center; font-size: 1rem; font-weight: 500; }
+.dropbtn { color: white; padding: 15px; font-size: 1rem; font-weight: 500; border: none; cursor: pointer; background-color: inherit; font-family: inherit; margin: 0; }
 .dropdown { position: relative; display: inline-block; }
-#navbar a:hover, .dropdown:hover .dropbtn { background-color: #495057; }
-.dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 180px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1002; border-radius: 0 0 5px 5px; border: 1px solid #ddd; }
+#navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus { background-color: #495057; outline: none; }
+.dropdown-content { display: none; /* 由JS控制显示 */ position: absolute; background-color: #ffffff; min-width: 180px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1002; border-radius: 0 0 5px 5px; border: 1px solid #ddd; }
+.dropdown-content.show { display: block; /* 新增的class，用于JS切换 */ }
 .dropdown-content a { color: black !important; padding: 12px 16px; text-decoration: none; display: block; text-align: left; font-size: 0.9rem; }
 .dropdown-content a:hover { background-color: #f1f1f1; }
-.dropdown:hover .dropdown-content { display: block; }
 
 /* --- 每日行程卡片 --- */
 .day-card { border-left: 5px solid #007bff; padding: 2rem; margin-bottom: 2rem; border-radius: 0 8px 8px 0; }

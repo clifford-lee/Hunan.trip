@@ -1,11 +1,49 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("终极旅行指南(最终修复版)已加载，所有功能已激活！");
+    console.log("旅行指南(最终修复版)已加载，所有功能已激活！");
+
+    // --- 全新：下拉菜单点击交互逻辑 ---
+    const dropdownBtns = document.querySelectorAll('.dropbtn');
+
+    // 切换下拉菜单显示
+    dropdownBtns.forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.stopPropagation(); // 阻止事件冒泡到window
+            const currentContent = this.nextElementSibling;
+            
+            // 关闭其他所有打开的下拉菜单
+            document.querySelectorAll('.dropdown-content').forEach(content => {
+                if (content !== currentContent) {
+                    content.classList.remove('show');
+                }
+            });
+            
+            // 切换当前点击的菜单
+            currentContent.classList.toggle('show');
+        });
+    });
+
+    // 点击窗口其他任何地方，关闭所有下拉菜单
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            document.querySelectorAll('.dropdown-content').forEach(content => {
+                content.classList.remove('show');
+            });
+        }
+    };
 
     // --- 平滑滚动导航功能 ---
     document.querySelectorAll('#navbar a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
+            
+            // 点击下拉菜单内的链接后，先关闭菜单
+            const parentDropdown = this.closest('.dropdown-content');
+            if (parentDropdown) {
+                parentDropdown.classList.remove('show');
+            }
+
+            // 然后平滑滚动
             document.querySelector(targetId).scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
@@ -13,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- 每日记账功能 ---
+    // --- 每日记账功能 (无变化) ---
     const expenseForm = document.getElementById('expense-form');
     if (!expenseForm) return;
 
@@ -23,12 +61,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const expenseDateInput = document.getElementById('expense-date');
 
     expenseDateInput.valueAsDate = new Date();
-    let expenses = JSON.parse(localStorage.getItem('tripExpenses_2025_final_v2')) || [];
+    let expenses = JSON.parse(localStorage.getItem('tripExpenses_2025_final_v4')) || [];
 
     function renderExpenses() {
         expenseList.innerHTML = '';
         let total = 0;
-        expenses.sort((a, b) => new Date(b.date) - new Date(a.date)); // 按日期降序排序
+        expenses.sort((a, b) => new Date(b.date) - new Date(a.date) || b.id - a.id);
         expenses.forEach(expense => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -45,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function saveData() {
-        localStorage.setItem('tripExpenses_2025_final_v2', JSON.stringify(expenses));
+        localStorage.setItem('tripExpenses_2025_final_v4', JSON.stringify(expenses));
     }
 
     expenseForm.addEventListener('submit', function(e) {
