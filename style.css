@@ -106,3 +106,17 @@ tr:nth-child(even) { background-color: #f8f9fa; }
     .day-card { padding: 2rem; }
     .expense-form input[type="text"] { flex-basis: auto; }
 }
+.export-button {
+    display: block;
+    margin: 1rem 0 0 auto; /* 调整与上方按钮的间距 */
+    background-color: #17a2b8; /* 使用不同的颜色以区分 */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.export-button:hover {
+    background-color: #138496;
+}
