@@ -1,69 +1,61 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("旅行指南(iOS兼容最终修复版)已加载！");
+    console.log("旅行指南(所有功能最终修复版)已加载！");
 
-    // --- 全新、兼容iOS的下拉菜单交互逻辑 ---
+    // --- 1. 全新、兼容所有设备的下拉菜单交互逻辑 ---
+    const navbar = document.getElementById('navbar');
 
-    // 定义一个函数来关闭所有打开的下拉菜单
     function closeAllDropdowns() {
         document.querySelectorAll('.dropdown-content.show').forEach(openDropdown => {
             openDropdown.classList.remove('show');
         });
     }
 
-    // 为每个下拉按钮添加点击事件
-    document.querySelectorAll('.dropbtn').forEach(btn => {
-        btn.addEventListener('click', function(event) {
-            // 阻止事件冒泡，以防其他监听器干扰
-            event.stopPropagation();
-            
-            const currentContent = this.nextElementSibling;
-            const isCurrentlyShown = currentContent.classList.contains('show');
+    if (navbar) {
+        // 为整个导航栏设置一个总的点击监听器（事件委托）
+        navbar.addEventListener('click', function(event) {
+            const target = event.target;
 
-            // 先关闭所有其他菜单
-            closeAllDropdowns();
-            
-            // 如果刚才点击的这个菜单是关闭的，现在就打开它
-            if (!isCurrentlyShown) {
-                currentContent.classList.add('show');
-            }
-        });
-    });
+            // 情况一：如果点击的是下拉菜单的按钮
+            if (target.classList.contains('dropbtn')) {
+                const content = target.nextElementSibling;
+                const isCurrentlyOpen = content.classList.contains('show');
+                closeAllDropdowns();
+                if (!isCurrentlyOpen) {
+                    content.classList.add('show');
+                }
+            } 
+            // 情况二：如果点击的是一个用于页面内跳转的链接
+            else if (target.tagName === 'A' && target.getAttribute('href').startsWith('#')) {
+                event.preventDefault(); // 阻止默认的瞬间跳转
+                
+                const targetId = target.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
 
-    // 为所有导航栏的链接（包括下拉菜单里的）添加点击事件
-    document.querySelectorAll('#navbar a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            // 先关闭所有菜单
-            closeAllDropdowns();
-
-            // 然后平滑滚动
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // 关键修复：同时监听 'click' (桌面端) 和 'touchend' (移动端) 事件来关闭菜单
-    ['click', 'touchend'].forEach(function(event_type) {
-        document.addEventListener(event_type, function(event) {
-            // 检查点击/触摸的是否是下拉按钮本身，如果不是，则继续
-            if (!event.target.closest('.dropbtn')) {
-                // 检查点击/触摸的是否在下拉菜单内容之内，如果不是，则关闭
-                if (!event.target.closest('.dropdown-content')) {
-                    closeAllDropdowns();
+                // 先关闭菜单，再执行滚动
+                closeAllDropdowns();
+                
+                if (targetElement) {
+                    // 使用一个微小的延迟确保关闭菜单的渲染完成后再滚动
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 50);
                 }
             }
         });
-    });
+
+        // 兼容所有设备的“点击/触摸空白处关闭菜单”功能
+        document.addEventListener('click', function(event) {
+            if (!navbar.contains(event.target)) {
+                closeAllDropdowns();
+            }
+        });
+    }
 
 
-    // --- 互动式清单功能 ---
+    // --- 2. 互动式清单功能 ---
     function initializeChecklists() {
         const checklists = document.querySelectorAll('.interactive-checklist');
         if (!checklists.length) return;
@@ -81,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- 实时天气组件功能 ---
+    // --- 3. 实时天气组件功能 ---
     async function fetchWeather() {
         const container = document.getElementById('weather-widget-container');
         if (!container) return;
@@ -92,8 +84,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const cities = [{ name: '宜昌', q: 'Yichang' },{ name: '恩施', q: 'Enshi' },{ name: '重庆', q: 'Chongqing' },{ name: '阳朔', q: 'Yangshuo' },{ name: '武汉', q: 'Wuhan' }];
+        const cities = [
+            { name: '宜昌', q: 'Yichang' },
+            { name: '恩施', q: 'Enshi' },
+            { name: '重庆', q: 'Chongqing' },
+            { name: '武隆', q: 'Wulong' },
+            { name: '铜仁', q: 'Tongren' },
+            { name: '阳朔', q: 'Yangshuo' },
+            { name: '洞口', q: 'Dongkou' },
+            { name: '衡阳', q: 'Hengyang' },
+            { name: '武汉', q: 'Wuhan' }
+        ];
+        
+        container.innerHTML = '<p>正在加载天气数据...</p>';
         let weatherHTML = '';
+
         for (const city of cities) {
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.q}&appid=${apiKey}&units=metric&lang=zh_cn`;
             try {
@@ -108,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = weatherHTML;
     }
 
-    // --- 每日记账功能 ---
+    // --- 4. 每日记账功能 ---
     const expenseForm = document.getElementById('expense-form');
     if (expenseForm) {
         const expenseList = document.getElementById('expense-list');
