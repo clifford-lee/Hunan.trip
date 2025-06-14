@@ -1,49 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("旅行指南(最终修复版)已加载，所有功能已激活！");
-
-    // --- 全新：下拉菜单点击交互逻辑 ---
-    const dropdownBtns = document.querySelectorAll('.dropbtn');
-
-    // 切换下拉菜单显示
-    dropdownBtns.forEach(btn => {
-        btn.addEventListener('click', function(event) {
-            event.stopPropagation(); // 阻止事件冒泡到window
-            const currentContent = this.nextElementSibling;
-            
-            // 关闭其他所有打开的下拉菜单
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                if (content !== currentContent) {
-                    content.classList.remove('show');
-                }
-            });
-            
-            // 切换当前点击的菜单
-            currentContent.classList.toggle('show');
-        });
-    });
-
-    // 点击窗口其他任何地方，关闭所有下拉菜单
-    window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                content.classList.remove('show');
-            });
-        }
-    };
+    console.log("旅行指南(最终完整版)已加载，所有功能已激活！");
 
     // --- 平滑滚动导航功能 ---
     document.querySelectorAll('#navbar a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
-            
-            // 点击下拉菜单内的链接后，先关闭菜单
-            const parentDropdown = this.closest('.dropdown-content');
-            if (parentDropdown) {
-                parentDropdown.classList.remove('show');
-            }
-
-            // 然后平滑滚动
             document.querySelector(targetId).scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
@@ -51,13 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- 每日记账功能 (无变化) ---
+    // --- 每日记账功能 ---
     const expenseForm = document.getElementById('expense-form');
     if (!expenseForm) return;
 
     const expenseList = document.getElementById('expense-list');
     const totalExpenses = document.getElementById('total-expenses');
     const clearDataBtn = document.getElementById('clear-data');
+    const exportCsvBtn = document.getElementById('export-csv');
+    const emailDataBtn = document.getElementById('email-data'); // 新增邮件按钮的引用
     const expenseDateInput = document.getElementById('expense-date');
 
     expenseDateInput.valueAsDate = new Date();
@@ -86,6 +50,58 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('tripExpenses_2025_final_v4', JSON.stringify(expenses));
     }
 
+    function exportToCsv() {
+        if (expenses.length === 0) {
+            alert("没有可导出的消费记录。");
+            return;
+        }
+        let csvContent = "data:text/csv;charset=utf-8,日期,项目,类别,金额\n";
+        expenses.forEach(expense => {
+            let row = `${expense.date},"${expense.item.replace(/"/g, '""')}",${expense.category},${expense.amount}`;
+            csvContent += row + "\n";
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "2025家庭旅行账单.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    
+    // --- 全新：通过邮件发送数据的功能 ---
+    function emailData() {
+        if (expenses.length === 0) {
+            alert("没有可发送的消费记录。");
+            return;
+        }
+
+        const subject = "2025家庭旅行账单";
+        let body = "大家好，\n\n这是本次旅行的消费记录明细：\n\n";
+        let total = 0;
+
+        expenses.forEach(expense => {
+            body += `${expense.date} | ${expense.item} (${expense.category}): ¥${parseFloat(expense.amount).toFixed(2)}\n`;
+            total += parseFloat(expense.amount);
+        });
+
+        body += `\n----------------------------------\n`;
+        body += `总计: ¥${total.toFixed(2)}\n\n`;
+        body += "祝好！\n\n";
+        body += "(请注意：如果记录条目过多，此邮件内容可能不完整。建议使用'导出为CSV'功能获取完整数据。)";
+
+        const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+        // 检查链接长度，给出警告
+        if (mailtoLink.length > 2000) {
+            alert("警告：记账记录太多，可能无法完整放入邮件。建议您使用“导出为CSV文件”功能，然后手动添加附件发送。");
+        }
+
+        // 打开邮件客户端
+        window.location.href = mailtoLink;
+    }
+
+    // --- 事件监听 ---
     expenseForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const newExpense = {
@@ -120,6 +136,10 @@ document.addEventListener('DOMContentLoaded', function() {
             renderExpenses();
         }
     });
+    
+    exportCsvBtn.addEventListener('click', exportToCsv);
+    emailDataBtn.addEventListener('click', emailData); // 给新的邮件按钮添加点击事件
 
+    // 初始加载
     renderExpenses();
 });
