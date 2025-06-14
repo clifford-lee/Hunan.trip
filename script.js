@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("旅行指南(移动端交互最终修复版)已加载！");
+    console.log("旅行指南(iOS兼容最终修复版)已加载！");
 
-    // --- 全新、更稳定的下拉菜单交互逻辑 (针对移动端优化) ---
+    // --- 全新、兼容iOS的下拉菜单交互逻辑 ---
 
     // 定义一个函数来关闭所有打开的下拉菜单
     function closeAllDropdowns() {
@@ -16,42 +16,52 @@ document.addEventListener('DOMContentLoaded', function() {
             // 阻止事件冒泡，以防其他监听器干扰
             event.stopPropagation();
             
-            const content = this.nextElementSibling;
-            const isCurrentlyOpen = content.classList.contains('show');
-            
-            // 先关闭所有菜单
+            const currentContent = this.nextElementSibling;
+            const isCurrentlyShown = currentContent.classList.contains('show');
+
+            // 先关闭所有其他菜单
             closeAllDropdowns();
             
             // 如果刚才点击的这个菜单是关闭的，现在就打开它
-            // 这样就实现了点击其他按钮会关闭当前按钮的功能
-            if (!isCurrentlyOpen) {
-                content.classList.add('show');
+            if (!isCurrentlyShown) {
+                currentContent.classList.add('show');
             }
         });
     });
 
-    // 为所有导航栏的链接添加点击事件
-    document.querySelectorAll('#navbar a').forEach(link => {
+    // 为所有导航栏的链接（包括下拉菜单里的）添加点击事件
+    document.querySelectorAll('#navbar a[href^="#"]').forEach(link => {
         link.addEventListener('click', function(e) {
-            // 检查这是否是一个指向页面内部锚点的链接
-            if (this.getAttribute('href').startsWith('#')) {
-                e.preventDefault(); // 阻止默认的瞬间跳转行为
-                
-                // 关键步骤：在执行任何操作之前，先关闭所有下拉菜单
-                closeAllDropdowns();
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            // 先关闭所有菜单
+            closeAllDropdowns();
 
-                // 然后平滑滚动到目标位置
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+            // 然后平滑滚动
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // 关键修复：同时监听 'click' (桌面端) 和 'touchend' (移动端) 事件来关闭菜单
+    ['click', 'touchend'].forEach(function(event_type) {
+        document.addEventListener(event_type, function(event) {
+            // 检查点击/触摸的是否是下拉按钮本身，如果不是，则继续
+            if (!event.target.closest('.dropbtn')) {
+                // 检查点击/触摸的是否在下拉菜单内容之内，如果不是，则关闭
+                if (!event.target.closest('.dropdown-content')) {
+                    closeAllDropdowns();
                 }
             }
         });
     });
+
 
     // --- 互动式清单功能 ---
     function initializeChecklists() {
@@ -75,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchWeather() {
         const container = document.getElementById('weather-widget-container');
         if (!container) return;
-        const apiKey = '0befc4de14e844dd09545fd0e78cd485'; // 使用您提供的API Key
+        const apiKey = '0befc4de14e844dd09545fd0e78cd485';
 
         if (!apiKey || apiKey === '在此处粘贴您的API密钥') {
             container.innerHTML = '<p>天气功能需要配置API密钥后才能使用。</p>';
@@ -127,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         function exportToCsv() {
             if (expenses.length === 0) { alert("没有可导出的消费记录。"); return; }
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFF日期,项目,类别,金额\n"; // 添加BOM头解决Excel中文乱码问题
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF日期,项目,类别,金额\n";
             expenses.forEach(expense => {
                 let row = `${expense.date},"${expense.item.replace(/"/g, '""')}",${expense.category},${expense.amount}`;
                 csvContent += row + "\n";
