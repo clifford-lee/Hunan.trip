@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("旅行指南(所有功能最终修复版)已加载！");
+    console.log("旅行指南(最终修复版)已加载！");
 
-    // --- 1. 全新、兼容所有设备的下拉菜单交互逻辑 ---
+    // --- 1. 下拉菜单交互逻辑 (最终修复版) ---
     const navbar = document.getElementById('navbar');
 
     function closeAllDropdowns() {
@@ -11,12 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (navbar) {
-        // 为整个导航栏设置一个总的点击监听器（事件委托）
+        // 事件委托：在整个导航栏上监听点击事件
         navbar.addEventListener('click', function(event) {
             const target = event.target;
 
             // 情况一：如果点击的是下拉菜单的按钮
-            if (target.classList.contains('dropbtn')) {
+            if (target.matches('.dropbtn')) {
                 const content = target.nextElementSibling;
                 const isCurrentlyOpen = content.classList.contains('show');
                 closeAllDropdowns();
@@ -24,29 +24,40 @@ document.addEventListener('DOMContentLoaded', function() {
                     content.classList.add('show');
                 }
             } 
-            // 情况二：如果点击的是一个用于页面内跳转的链接
-            else if (target.tagName === 'A' && target.getAttribute('href').startsWith('#')) {
-                event.preventDefault(); // 阻止默认的瞬间跳转
+            // 情况二：如果点击的是一个下拉菜单里的链接
+            else if (target.matches('.dropdown-content a')) {
+                event.preventDefault();
                 
+                // 核心修复1：先关闭菜单
+                closeAllDropdowns();
+
+                // 核心修复1：然后使用微小延迟来执行滚动，避免冲突
                 const targetId = target.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-
-                // 先关闭菜单，再执行滚动
-                closeAllDropdowns();
-                
                 if (targetElement) {
-                    // 使用一个微小的延迟确保关闭菜单的渲染完成后再滚动
                     setTimeout(() => {
                         targetElement.scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
                         });
-                    }, 50);
+                    }, 50); // 50毫秒延迟
+                }
+            }
+            // 情况三：如果点击的是普通的顶层导航链接
+            else if (target.matches('#navbar > a[href^="#"]')) {
+                event.preventDefault();
+                const targetId = target.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                     targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             }
         });
 
-        // 兼容所有设备的“点击/触摸空白处关闭菜单”功能
+        // 点击页面其他任何地方关闭菜单
         document.addEventListener('click', function(event) {
             if (!navbar.contains(event.target)) {
                 closeAllDropdowns();
@@ -116,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- 4. 每日记账功能 ---
     const expenseForm = document.getElementById('expense-form');
     if (expenseForm) {
+        // ... (此处省略与上一版完全相同的记账、导出、邮件功能代码) ...
         const expenseList = document.getElementById('expense-list');
         const totalExpenses = document.getElementById('total-expenses');
         const clearDataBtn = document.getElementById('clear-data');
@@ -124,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const expenseDateInput = document.getElementById('expense-date');
         expenseDateInput.valueAsDate = new Date();
         let expenses = JSON.parse(localStorage.getItem('tripExpenses_2025_final_v4')) || [];
-
         function renderExpenses() {
             expenseList.innerHTML = '';
             let total = 0;
