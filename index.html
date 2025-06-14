@@ -61,6 +61,16 @@
                 <p><strong>本次旅行的特殊意义：</strong> 这次旅行，我们想完成一个特别的心愿。带着妻儿和弟弟，我们将回到老家洞口，去感受那份根的牵连；同时，也会前往衡阳，向爷爷奶奶表达我们深切的缅怀和敬意。 </p>
             </div>
         </section>
+       </section> <section id="weather-forecast">
+            <h2>天气速报 🌦️</h2>
+            <div class="card">
+                <p>未来几天主要目的地天气预报（数据需要联网获取）：</p>
+                <div id="weather-widget-container">
+                <p>正在加载天气数据...</p>
+            </div>
+        <small>天气数据由 OpenWeatherMap 提供。</small>
+           </div>
+       </section>
 
         <section id="reminders">
             <h2>一、出发前必看的小提醒 💡</h2>
@@ -549,18 +559,41 @@
             </div>
             
             <div class="card" id="prep-guide-full">
-                <h3>2025暑期自驾游出发前节点计划 </h3>
-                <p><b>T-30天・5月29日前后</b></p>
-                <ul><li><b>行程锁定:</b> 核对《20天家庭旅行行程手册》最终版,核实所有酒店房型、免费取消截止日。</li><li><b>车辆确认:</b> 与租车公司二次确认GL8陆尊PHEV取车时间、保险、充电卡、ETC绑定。</li><li><b>健康与保险:</b> 全家补充意外/医疗保险；自备最近体检报告复印件和处方。</li><li><b>证件备份:</b> 扫描并云端同步身份证、驾驶证、行驶证、医保卡等。</li></ul>
-                <p><b>T-14天・6月14日前后</b></p>
-                <ul><li><b>门票集中预订:</b> 三峡大坝观光车、恩施大峡谷联票、梵净山索道、衡山环保车+缆车等。</li><li><b>车辆体检:</b> 自备OBD检查胎压、电池SOC、油液。</li><li><b>摄影装备清单:</b> 检查相机、镜头、无人机、电池、SD卡等。</li><li><b>行李草单:</b> 列出速干衣裤、薄外套、冲锋衣、泳衣、登山鞋等。</li></ul>
-                <p><b>T-7天・6月21日前后</b></p>
-                <ul><li><b>酒店电话复核:</b> 确认抵达时间、车位、充电桩、房型朝向及房间便利性。</li><li><b>行李试装:</b> 统一装箱,验证后备厢空间。</li><li><b>药品补给:</b> 补充感冒灵、达喜、藿香正气水、速效救心丸、处方药等。</li></ul>
-                <p><b>T-1天・6月27日(周五)</b></p>
-                <ul><li><b>18:00 取车并现场验车:</b> 检查车身划痕、随车工具、胎压、油电；拍照留存。</li><li><b>车辆装车:</b> 行李按“日常-摄影-应急”顺序放置；摄影包置于中排座椅脚边。</li><li><b>司机休息:</b> 22:00前熄灯,避免熬夜。</li></ul>
-                <p><b>T0・6月28日(周六)</b> </p>
-                <ul><li>06:00: 全员起床,证件再确认</li><li>06:15: 轻食早餐(三明治+热牛奶)</li><li>06:45: 西门集合合影,正式发车</li><li>07:15: 上宁合高速</li></ul>
-            </div>
+    <h3>2025暑期自驾游出发前节点计划</h3>
+    <ul class="interactive-checklist" data-checklist-id="prep-list">
+        <li><label><input type="checkbox" id="prep1"> T-30天・5月29日前后</label>
+            <ul>
+                <li><label><input type="checkbox" id="prep1-1"> 核对《行程手册》最终版</label></li>
+                <li><label><input type="checkbox" id="prep1-2"> 核实所有酒店房型与取消政策</label></li>
+                <li><label><input type="checkbox" id="prep1-3"> 与租车公司二次确认车辆信息</label></li>
+                <li><label><input type="checkbox" id="prep1-4"> 全家补充意外/医疗保险</label></li>
+                <li><label><input type="checkbox" id="prep1-5"> 扫描并云端备份所有证件</label></li>
+            </ul>
+        </li>
+        <li><label><input type="checkbox" id="prep2"> T-14天・6月14日前后</label>
+            <ul>
+                <li><label><input type="checkbox" id="prep2-1"> 集中预订需要预约的门票</label></li>
+                <li><label><input type="checkbox" id="prep2-2"> 检查车辆OBD、胎压、油液</label></li>
+                <li><label><input type="checkbox" id="prep2-3"> 列出并检查摄影装备清单</label></li>
+                <li><label><input type="checkbox" id="prep2-4"> 列出并检查行李衣物草单</label></li>
+            </ul>
+        </li>
+        <li><label><input type="checkbox" id="prep3"> T-7天・6月21日前后</label>
+            <ul>
+                <li><label><input type="checkbox" id="prep3-1"> 电话复核所有酒店的预订</label></li>
+                <li><label><input type="checkbox" id="prep3-2"> 进行第一次行李试装</label></li>
+                <li><label><input type="checkbox" id="prep3-3"> 补充旅行药品</label></li>
+            </ul>
+        </li>
+        <li><label><input type="checkbox" id="prep4"> T-1天・6月27日(周五)</label>
+            <ul>
+                <li><label><input type="checkbox" id="prep4-1"> 18:00取车并现场验车</label></li>
+                <li><label><input type="checkbox" id="prep4-2"> 按顺序和区域装载行李</label></li>
+                <li><label><input type="checkbox" id="prep4-3"> 司机22:00前休息</label></li>
+            </ul>
+        </li>
+    </ul>
+</div>
             
             <div class="card" id="culture-guide-full">
                 <h3>2025年家庭旅行・文化探索小册 </h3>
